@@ -23,13 +23,17 @@ if __name__ == "__main__":
     part2_enabled = False
     # part2_enabled = True
 
-    day = 3
+    day = 4
     year = 2023
 
     with open(f"day{day}/sample_input.txt", "r") as file:
         arr = [line.strip() for line in file.readlines()]   
+    
     result = part1(arr)
     print(f"[Sample]This is the part-1 result: {result}")
+
+    print("===============")
+    
     result = part2(arr)
     print(f"[Sample]This is the part-2 result: {result}")
 
@@ -52,7 +56,6 @@ if response.status_code == 200:
     data = response.text
     # Process the data as needed
     if part1_enabled:
-
         result = part1(data.splitlines())
         print(f"[Puzzle]This is the part-1 result: {result}")
     if part2_enabled:

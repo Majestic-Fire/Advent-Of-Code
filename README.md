@@ -22,3 +22,14 @@ for cr in [row-1, row, row+1]:
 ```
 count = sum(n in winNum for n in num)
 ```
+
+#### Day5
+---
+- use map to iterate string to int
+```
+seeds = list(map(seeds.split(': ')[1].split()))
+```
+
+- enumerate doesnt work
+- get the min from last map, and derive back
+- get dest + len that falls in upper map
