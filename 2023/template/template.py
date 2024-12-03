@@ -63,3 +63,9 @@ if response.status_code == 200:
         print(f"[Puzzle]This is the part-2 result: {result}")
 else:
     print("Error: Failed to fetch data. Status code:", response.status_code)
+
+
+
+
+
+
