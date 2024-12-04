@@ -24,9 +24,12 @@ const part1 = (rawInput) => {
 
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
+      if (array[i][j] !== target[0]) {
+        continue;
+      }
       for (const { x, y } of directions) {
         let k;
-        for (k = 0; k < target.length; k++) {
+        for (k = 1; k < target.length; k++) {
           const newRow = i + k * x;
           const newCol = j + k * y;
           if (
@@ -46,7 +49,6 @@ const part1 = (rawInput) => {
     }
   }
 
-
   return result;
 };
 
@@ -61,15 +63,15 @@ const part2 = (rawInput) => {
   for (let i = 1; i < rows - 1; i++) {
     for (let j = 1; j < cols - 1; j++) {
       if (array[i][j] === "A") {
-        // Check ↖ top[row-1]-left[col-1] to ↘ bottom[row+1]-right[col+1] diagonal  
+        // Check ↖ top[row-1]-left[col-1] to ↘ bottom[row+1]-right[col+1] diagonal
         if (
-          ((array[i - 1][j - 1] === "M" && array[i + 1][j + 1] === "S") ||
-            (array[i - 1][j - 1] === "S" && array[i + 1][j + 1] === "M"))
+          (array[i - 1][j - 1] === "M" && array[i + 1][j + 1] === "S") ||
+          (array[i - 1][j - 1] === "S" && array[i + 1][j + 1] === "M")
         ) {
           // Check top[row-1]-right[col+1] to bottom[row+1]-left[col-1] diagonal
           if (
-            ((array[i - 1][j + 1] === "M" && array[i + 1][j - 1] === "S") ||
-              (array[i - 1][j + 1] === "S" && array[i + 1][j - 1] === "M"))
+            (array[i - 1][j + 1] === "M" && array[i + 1][j - 1] === "S") ||
+            (array[i - 1][j + 1] === "S" && array[i + 1][j - 1] === "M")
           ) {
             result++;
           }

@@ -7,20 +7,30 @@ function isSafe(numbers) {
   // console.log("- initialDiff", initialDiff);
 
   // set direction
-  if (initialDiff < 0) { increasing = false; }
+  if (initialDiff < 0) {
+    increasing = false;
+  }
 
   // check diff
-  if (Math.abs(initialDiff) > 3 || Math.abs(initialDiff) < 1) { return false; }
+  if (Math.abs(initialDiff) > 3 || Math.abs(initialDiff) < 1) {
+    return false;
+  }
 
   for (let i = 1; i < numbers.length - 1; i++) {
     const diff = numbers[i + 1] - numbers[i];
 
     // check direction
-    if (increasing && diff < 0) { return false; }
-    if (!increasing && diff > 0) { return false; }
+    if (increasing && diff < 0) {
+      return false;
+    }
+    if (!increasing && diff > 0) {
+      return false;
+    }
 
     // check diff
-    if (Math.abs(diff) > 3 || Math.abs(diff) < 1) { return false; }
+    if (Math.abs(diff) > 3 || Math.abs(diff) < 1) {
+      return false;
+    }
   }
 
   return true;
@@ -59,8 +69,7 @@ const part2 = (rawInput) => {
 
     if (isSafe(numbers)) {
       safeCount++;
-    }
-    else {
+    } else {
       // try removing one number from beginning
       // TODO: try remove 2 related unsafe numbers
       for (let i = 0; i < numbers.length; i++) {
@@ -73,7 +82,7 @@ const part2 = (rawInput) => {
         }
       }
     }
-  };
+  }
 
   return safeCount;
 };
