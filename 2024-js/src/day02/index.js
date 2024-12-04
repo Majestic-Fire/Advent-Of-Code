@@ -61,6 +61,8 @@ const part2 = (rawInput) => {
       safeCount++;
     }
     else {
+      // try removing one number from beginning
+      // TODO: try remove 2 related unsafe numbers
       for (let i = 0; i < numbers.length; i++) {
         const newNumbers = [...numbers];
         newNumbers.splice(i, 1);
