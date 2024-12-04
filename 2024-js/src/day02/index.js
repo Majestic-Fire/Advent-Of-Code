@@ -1,15 +1,16 @@
 import run from "aocrunner";
 
 function isSafe(numbers) {
-
   let increasing = true;
 
   const initialDiff = numbers[1] - numbers[0];
+  // console.log("- initialDiff", initialDiff);
+
+  // set direction
   if (initialDiff < 0) { increasing = false; }
 
-  if (Math.abs(initialDiff) > 3 || initialDiff < 1) {
-    return false;
-  }
+  // check diff
+  if (Math.abs(initialDiff) > 3 || Math.abs(initialDiff) < 1) { return false; }
 
   for (let i = 1; i < numbers.length - 1; i++) {
     const diff = numbers[i + 1] - numbers[i];
@@ -19,8 +20,7 @@ function isSafe(numbers) {
     if (!increasing && diff > 0) { return false; }
 
     // check diff
-    if (Math.abs(diff) > 3 || diff < 1) { return false; }
-
+    if (Math.abs(diff) > 3 || Math.abs(diff) < 1) { return false; }
   }
 
   return true;
@@ -36,43 +36,17 @@ const part1 = (rawInput) => {
   let safeCount = 0;
   for (const line of lines) {
     const numbers = line.split(" ").map(Number);
-    // console.log(numbers);
+    // console.log("\n", numbers);
 
-    let isSafe = true;
-
-    const initialDiff = numbers[1] - numbers[0];
-    // console.log("- initialDiff", initialDiff);
-    if (Math.abs(initialDiff) > 3 || initialDiff == 0) { isSafe = false; continue; }
-
-    for (let i = 1; i < numbers.length - 1; i++) {
-      const diff = numbers[i + 1] - numbers[i];
-      // console.log(`- diff [${i}]: ${diff}`);
-
-      // not all incresaing or decreasing
-      if (initialDiff < 0 && diff > 0) { isSafe = false; break; }
-      if (initialDiff > 0 && diff < 0) { isSafe = false; break; }
-
-      // Any two adjacent levels differ by at least one and at most three.
-      // =0 or >3 : is not safe
-      // we checked direction above, so we check abs value  
-      if (Math.abs(diff) > 3 || diff == 0) {
-        // console.log("- not safe >", diff);
-        isSafe = false;
-        break;
-      }
-
-    }
-
-    if (isSafe) {
+    if (isSafe(numbers)) {
       safeCount++;
-      // console.log("* safeCount(+1):", safeCount);
     }
   }
-
 
   return safeCount;
 };
 
+// TODO: optimize
 const part2 = (rawInput) => {
   const input = parseInput(rawInput);
 
@@ -81,61 +55,23 @@ const part2 = (rawInput) => {
   let safeCount = 0;
   for (const line of lines) {
     const numbers = line.split(" ").map(Number);
-    console.log("\n", numbers);
+    // console.log("\n", numbers);
 
-    let isSafe = true;
-    let skipCount = 0;
+    if (isSafe(numbers)) {
+      safeCount++;
+    }
+    else {
+      for (let i = 0; i < numbers.length; i++) {
+        const newNumbers = [...numbers];
+        newNumbers.splice(i, 1);
 
-    const initialDiff = numbers[1] - numbers[0];
-    console.log("- initialDiff", initialDiff);
-    if (Math.abs(initialDiff) > 3 || initialDiff == 0) { skipCount++; }
-
-    for (let i = 1; i < numbers.length - 1; i++) {
-      const diff = numbers[i + 1] - numbers[i];
-      console.log(`- diff [${numbers[i + 1]}-${numbers[i]}]: ${diff}`);
-
-
-      // not all incresaing or decreasing
-      if (initialDiff < 0 && diff > 0) {
-        console.log("* direction inverse, unsafe!");
-        isSafe = false;
-      }
-      if (initialDiff > 0 && diff < 0) {
-        console.log("* direction inverse, unsafe!");
-        isSafe = false;
-      }
-
-      // Any two adjacent levels differ by at least one and at most three.
-      // =0 or >3 : is not safe
-      // we checked direction above, so we check abs value  
-      if (Math.abs(diff) > 3 || diff == 0) {
-        console.log("- not safe >", diff);
-        isSafe = false;
-      }
-
-      if (!isSafe) {
-        skipCount++;
-        isSafe = true;
-        numbers.splice(i + 1, 1);
-        i--;
-        console.log("- skipCount(+1):", skipCount);
-        console.log("+ new Numbers:", numbers);
-
-        if (skipCount > 1) {
-          console.log("* skipCount > 1, unsafe!");
-          isSafe = false;
+        if (isSafe(newNumbers)) {
+          safeCount++;
           break;
         }
       }
-
     }
-
-    if (isSafe) {
-      safeCount++;
-      console.log("* safeCount(+1):", safeCount);
-    }
-  }
-
+  };
 
   return safeCount;
 };
@@ -170,5 +106,5 @@ run({
     solution: part2,
   },
   trimTestInputs: true,
-  onlyTests: true,
+  onlyTests: false,
 });
