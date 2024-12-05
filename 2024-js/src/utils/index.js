@@ -22,3 +22,9 @@
  *     import myLib from '../utils/myLib'
  *     import { myUtil } from '../utils'
  */
+
+import * as sort from './sort.js';
+
+export {
+    sort
+}

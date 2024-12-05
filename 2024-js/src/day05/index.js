@@ -1,4 +1,5 @@
 import run from "aocrunner";
+import { sort } from "../utils/index.js";
 
 const parseInput = (rawInput) => {
   const [section1, section2] = rawInput.split("\n\n");
@@ -52,76 +53,55 @@ const part1 = (rawInput) => {
   return result;
 };
 
-const topologicalSort = (numberList, order_rules_map) => {
-  const inDegree = new Map(); // # of incoming edges
-  const graph = new Map(); // adjacency list graph
-  // ? Example:
-  // ? numberList: [1, 2, 3, 4]
-  // ? order rule: 1->2, 1->3, 3->4
 
-  // Initialize the graph, create Node
-  // ? inDegree: {1: 0, 2: 0, 3: 0, 4: 0}
-  // ? graph: {1: [], 2: [], 3: [], 4: []}
-  numberList.forEach(num => {
-    inDegree.set(num, 0);
-    graph.set(num, []);
-  });
-
-  // Make Reverse map, how many incoming edges
-  // Just grab related map, instead of my ALL rules
-  // ? inDegree: {1: 0, 2: 1, 3: 1, 4: 1}
-  // ? graph: {1: [2, 3], 2: [], 3: [4], 4: []}
-  numberList.forEach(num => {
-    if (order_rules_map.has(num)) {
-      order_rules_map.get(num).forEach(neighbour => {
-        if (inDegree.has(neighbour)) {
-          // 前: 插邊個
-          graph.get(num).push(neighbour);
-          // 後: 被插數 +1
-          inDegree.set(neighbour, inDegree.get(neighbour) + 1);
-        }
-      });
-    }
-  });
-
-  // console.log("===== sorting NOW =====");
-  // console.log(order_rules_map);
-  // console.log(inDegree);
-  // console.log(graph);
-
-  // Find all 被插數 = 0, 起頭
-  // their order is not important
-  const queue = [];
-  inDegree.forEach((degree, node) => {
-    if (degree === 0) {
-      queue.push(node);
-    }
-  });
-
-  // Process the queue
-  // ? inDegree: {1: 0, 2: 1, 3: 1, 4: 1}
-  // ? graph: {1: [2, 3], 2: [], 3: [4], 4: []}
-  // ? queue: [1]
-  const sortedOrder = [];
-  while (queue.length > 0) {
-    const node = queue.shift(); // get first in queue
-    sortedOrder.push(node);
-    graph.get(node).forEach(neighbour => {
-      // ? 放1 ; 2 3 被插數 -1
-      inDegree.set(neighbour, inDegree.get(neighbour) - 1);
-      // ? 如果 prev node 以放置完
-      // ? 自己 order 冇 前面的 dependency
-      // ? 自己可以放入 queue , to be placed
-      if (inDegree.get(neighbour) === 0) {
-        queue.push(neighbour);
-      }
-    });
-  }
-
-  return sortedOrder;
-};
 
 const part2 = (rawInput) => {
+  const { order_rules_map, update_orders } = parseInput(rawInput);
+
+  // === Answer
+  let result = 0;
+
+  for (const update_order of update_orders) {
+    let isCorrect = true;
+    // console.log("\n===== New Order =====");
+
+    for (let i = 0; i < update_order.length; i++) {
+      const curr = update_order[i];
+      let swapOffset = 0;
+
+      for (let j = i + 1; j < update_order.length; j++) {
+        // console.log(`Order${i}-${j}: ${update_order}`);
+        const next = update_order[j];
+
+        // if curr next 反了, shift it
+        if (order_rules_map.has(next) && order_rules_map.get(next).includes(curr)) {
+          // console.log(`shift ${next} before ${curr}`);
+
+          // Remove the element at index j
+          const [shiftedElement] = update_order.splice(j, 1);
+
+          // Insert the element at index i
+          update_order.splice(i, 0, shiftedElement);
+          isCorrect = false;
+          i--; // Re-evaluate the order at curr index
+          break; // Break to re-evaluate the order after shifting
+        }
+
+      }
+    }
+
+    // Take corrected of incorrect order
+    if (!isCorrect) {
+      result += update_order[Math.floor(update_order.length / 2)];
+      // console.log(update_order, "\n");
+    }
+  }
+  return result;
+};
+
+const part2_kahn = (rawInput) => {
+  console.log("- Running Part 2_Kahn's Algorithm");
+
   const { order_rules_map, update_orders } = parseInput(rawInput);
 
   let result = 0;
@@ -144,7 +124,7 @@ const part2 = (rawInput) => {
 
     // Only count the incorrect order, fix it, sum of mid number
     if (!valid) {
-      const new_number_list = topologicalSort(update_order, order_rules_map);
+      const new_number_list = sort.kahnSort(update_order, order_rules_map);
       result += new_number_list[new_number_list.length >> 1];
     }
   });
