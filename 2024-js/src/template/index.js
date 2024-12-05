@@ -5,13 +5,17 @@ const parseInput = (rawInput) => rawInput;
 const part1 = (rawInput) => {
   const input = parseInput(rawInput);
 
-  return;
+  let result = 0;
+
+  return result;
 };
 
 const part2 = (rawInput) => {
   const input = parseInput(rawInput);
 
-  return;
+  let result = 0;
+
+  return result;
 };
 
 run({

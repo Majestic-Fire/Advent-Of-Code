@@ -1,10 +1,7 @@
 import run from "aocrunner";
 
-const parseInput = (rawInput) => rawInput;
-
-const part1 = (rawInput) => {
-  const input = parseInput(rawInput);
-  const [section1, section2] = input.split("\n\n");
+const parseInput = (rawInput) => {
+  const [section1, section2] = rawInput.split("\n\n");
 
   // === Section 1 process
   const order_rules = section1.split("\n");
@@ -15,22 +12,22 @@ const part1 = (rawInput) => {
     order_rules_map.set(key, [value, ...(order_rules_map.get(key) || [])]);
   });
 
-  // console.log(section1);
-  // console.log(order_rules);
-  // console.log(order_rules_map);
-
   // === Section 2 process
   const update_orders = section2
     .split("\n")
     .map((order) => order.split(",").map(Number));
 
-  // console.log(update_orders);
+  return { order_rules_map, update_orders };
+};
+
+const part1 = (rawInput) => {
+  const { order_rules_map, update_orders } = parseInput(rawInput);
 
   // === Answer
   let result = 0;
 
   for (const update_order of update_orders) {
-    let isCorrect = true;
+    let valid = true;
 
     for (let i = 0; i < update_order.length; i++) {
       const curr = update_order[i];
@@ -41,82 +38,117 @@ const part1 = (rawInput) => {
         // 如果 next 的 rule 裡面有 curr(後), 代表反了
         // 因爲現在 curr 是 next 的前面, 不是後
         if (order_rules_map.has(next) && order_rules_map.get(next).includes(curr)) {
-          isCorrect = false;
+          valid = false;
           break;
         }
       }
     }
 
-    if (isCorrect) {
-      result += update_order[Math.floor(update_order.length / 2)];
+    if (valid) {
+      result += update_order[update_order.length >> 1];
       // console.log(update_order);
     }
   }
   return result;
 };
 
-const part2 = (rawInput) => {
-  const input = parseInput(rawInput);
-  const [section1, section2] = input.split("\n\n");
+const topologicalSort = (numberList, order_rules_map) => {
+  const inDegree = new Map(); // # of incoming edges
+  const graph = new Map(); // adjacency list graph
+  // ? Example:
+  // ? numberList: [1, 2, 3, 4]
+  // ? order rule: 1->2, 1->3, 3->4
 
-  // === Section 1 process
-  const order_rules = section1.split("\n");
-  const order_rules_map = new Map();
-
-  order_rules.forEach((rule) => {
-    const [key, value] = rule.split("|").map((x) => Number(x));
-    order_rules_map.set(key, [value, ...(order_rules_map.get(key) || [])]);
+  // Initialize the graph, create Node
+  // ? inDegree: {1: 0, 2: 0, 3: 0, 4: 0}
+  // ? graph: {1: [], 2: [], 3: [], 4: []}
+  numberList.forEach(num => {
+    inDegree.set(num, 0);
+    graph.set(num, []);
   });
 
-  // console.log(section1);
-  // console.log(order_rules);
+  // Make Reverse map, how many incoming edges
+  // Just grab related map, instead of my ALL rules
+  // ? inDegree: {1: 0, 2: 1, 3: 1, 4: 1}
+  // ? graph: {1: [2, 3], 2: [], 3: [4], 4: []}
+  numberList.forEach(num => {
+    if (order_rules_map.has(num)) {
+      order_rules_map.get(num).forEach(neighbour => {
+        if (inDegree.has(neighbour)) {
+          // 前: 插邊個
+          graph.get(num).push(neighbour);
+          // 後: 被插數 +1
+          inDegree.set(neighbour, inDegree.get(neighbour) + 1);
+        }
+      });
+    }
+  });
+
+  // console.log("===== sorting NOW =====");
   // console.log(order_rules_map);
+  // console.log(inDegree);
+  // console.log(graph);
 
-  // === Section 2 process
-  const update_orders = section2
-    .split("\n")
-    .map((order) => order.split(",").map(Number));
+  // Find all 被插數 = 0, 起頭
+  // their order is not important
+  const queue = [];
+  inDegree.forEach((degree, node) => {
+    if (degree === 0) {
+      queue.push(node);
+    }
+  });
 
-  // console.log(update_orders);
+  // Process the queue
+  // ? inDegree: {1: 0, 2: 1, 3: 1, 4: 1}
+  // ? graph: {1: [2, 3], 2: [], 3: [4], 4: []}
+  // ? queue: [1]
+  const sortedOrder = [];
+  while (queue.length > 0) {
+    const node = queue.shift(); // get first in queue
+    sortedOrder.push(node);
+    graph.get(node).forEach(neighbour => {
+      // ? 放1 ; 2 3 被插數 -1
+      inDegree.set(neighbour, inDegree.get(neighbour) - 1);
+      // ? 如果 prev node 以放置完
+      // ? 自己 order 冇 前面的 dependency
+      // ? 自己可以放入 queue , to be placed
+      if (inDegree.get(neighbour) === 0) {
+        queue.push(neighbour);
+      }
+    });
+  }
 
-  // === Answer
+  return sortedOrder;
+};
+
+const part2 = (rawInput) => {
+  const { order_rules_map, update_orders } = parseInput(rawInput);
+
   let result = 0;
 
-  for (const update_order of update_orders) {
-    let isCorrect = true;
-    // console.log("\n===== New Order =====");
+  update_orders.forEach(update_order => {
+    let valid = true;
 
+    // Check if the order is correct
     for (let i = 0; i < update_order.length; i++) {
       const curr = update_order[i];
-      let swapOffset = 0;
-
       for (let j = i + 1; j < update_order.length; j++) {
-        // console.log(`Order${i}-${j}: ${update_order}`);
         const next = update_order[j];
-
-        // if curr next 反了, shift it
         if (order_rules_map.has(next) && order_rules_map.get(next).includes(curr)) {
-          // console.log(`shift ${next} before ${curr}`);
-
-          // Remove the element at index j
-          const [shiftedElement] = update_order.splice(j, 1);
-
-          // Insert the element at index i
-          update_order.splice(i, 0, shiftedElement);
-          isCorrect = false;
-          i--; // Re-evaluate the order at curr index
-          break; // Break to re-evaluate the order after shifting
+          valid = false;
+          break;
         }
-
       }
+      if (!valid) break;
     }
 
-    // Take corrected of incorrect order
-    if (!isCorrect) {
-      result += update_order[Math.floor(update_order.length / 2)];
-      // console.log(update_order, "\n");
+    // Only count the incorrect order, fix it, sum of mid number
+    if (!valid) {
+      const new_number_list = topologicalSort(update_order, order_rules_map);
+      result += new_number_list[new_number_list.length >> 1];
     }
-  }
+  });
+
   return result;
 };
 
