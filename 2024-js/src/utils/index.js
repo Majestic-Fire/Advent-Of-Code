@@ -24,7 +24,9 @@
  */
 
 import * as sort from './sort.js';
+import * as grid from './grid.js';
 
 export {
-    sort
+    sort,
+    grid
 }
