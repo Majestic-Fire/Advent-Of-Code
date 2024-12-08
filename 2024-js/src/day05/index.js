@@ -1,5 +1,5 @@
 import run from "aocrunner";
-import { sort } from "../utils/index.js";
+import { sortUtil } from "../utils/index.js";
 
 const parseInput = (rawInput) => {
   const [section1, section2] = rawInput.split("\n\n");

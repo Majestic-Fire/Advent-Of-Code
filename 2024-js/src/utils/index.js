@@ -23,7 +23,7 @@
  *     import { myUtil } from '../utils'
  */
 
-import * as sort from "./sort.js";
-import * as grid from "./grid.js";
+import * as sortUtil from "./sort.js";
+import * as gridUtil from "./grid.js";
 
-export { sort, grid };
+export { sortUtil, gridUtil };

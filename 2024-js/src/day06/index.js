@@ -1,5 +1,5 @@
 import run from "aocrunner";
-import { grid } from "../utils/index.js";
+import { gridUtil } from "../utils/index.js";
 
 const parseInput = (rawInput) => rawInput;
 
