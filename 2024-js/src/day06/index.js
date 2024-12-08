@@ -1,5 +1,5 @@
 import run from "aocrunner";
-import { grid } from '../utils/index.js';
+import { grid } from "../utils/index.js";
 
 const parseInput = (rawInput) => rawInput;
 
@@ -9,21 +9,21 @@ const part1 = (rawInput) => {
 
   const directions = [
     { dr: -1, dc: 0 }, // up
-    { dr: 0, dc: 1 },  // right
-    { dr: 1, dc: 0 },  // down
-    { dr: 0, dc: -1 }  // left
+    { dr: 0, dc: 1 }, // right
+    { dr: 1, dc: 0 }, // down
+    { dr: 0, dc: -1 }, // left
   ];
 
   let guard = { r: -1, c: -1, facing: -1 };
 
-  // find guard with facing ^ > v < 
+  // find guard with facing ^ > v <
   for (let r = 0; r < maze.length; r++) {
     for (let c = 0; c < maze[r].length; c++) {
-      if (maze[r][c] === '^') {
+      if (maze[r][c] === "^") {
         guard = {
           r: r,
           c: c,
-          facing: 0
+          facing: 0,
         };
         break;
       }
@@ -34,8 +34,8 @@ const part1 = (rawInput) => {
   let result = 0;
   while (!grid.isOutOfRange(guard.r, guard.c, maze)) {
     // leave a mark
-    if (maze[guard.r][guard.c] !== 'X') {
-      maze[guard.r][guard.c] = 'X';
+    if (maze[guard.r][guard.c] !== "X") {
+      maze[guard.r][guard.c] = "X";
       result++;
     }
 
@@ -43,18 +43,16 @@ const part1 = (rawInput) => {
     const nr = guard.r + dr;
     const nc = guard.c + dc;
 
-    if (grid.isOutOfRange(nr, nc, maze))
-      break;
+    if (grid.isOutOfRange(nr, nc, maze)) break;
 
     // rotate if next step is wall
-    if (maze[nr][nc] === '#') {
+    if (maze[nr][nc] === "#") {
       guard.facing = (guard.facing + 1) % 4;
     } else {
       // move forward
       guard.r = nr;
       guard.c = nc;
     }
-
   }
 
   return result;
@@ -65,21 +63,21 @@ const part2 = (rawInput) => {
 
   const directions = [
     { dr: -1, dc: 0 }, // up
-    { dr: 0, dc: 1 },  // right
-    { dr: 1, dc: 0 },  // down
-    { dr: 0, dc: -1 }  // left
+    { dr: 0, dc: 1 }, // right
+    { dr: 1, dc: 0 }, // down
+    { dr: 0, dc: -1 }, // left
   ];
 
   let guard = { r: -1, c: -1, facing: -1 };
 
-  // find guard with facing ^ > v < 
+  // find guard with facing ^ > v <
   for (let r = 0; r < maze.length; r++) {
     for (let c = 0; c < maze[r].length; c++) {
-      if (maze[r][c] === '^') {
+      if (maze[r][c] === "^") {
         guard = {
           r: r,
           c: c,
-          facing: 0
+          facing: 0,
         };
         break;
       }
@@ -91,17 +89,18 @@ const part2 = (rawInput) => {
     let visistedGrid_vector = new Set();
 
     while (true) {
-      visistedGrid_vector.add(`${tmp_guard.r},${tmp_guard.c},${tmp_guard.facing}`);
+      visistedGrid_vector.add(
+        `${tmp_guard.r},${tmp_guard.c},${tmp_guard.facing}`,
+      );
 
       const { dr, dc } = directions[tmp_guard.facing];
       const nr = tmp_guard.r + dr;
       const nc = tmp_guard.c + dc;
 
-      if (grid.isOutOfRange(nr, nc, tmp_maze))
-        return false; // can escape, not in loop
+      if (grid.isOutOfRange(nr, nc, tmp_maze)) return false; // can escape, not in loop
 
       // rotate if next step is wall
-      if (tmp_maze[nr][nc] === '#') {
+      if (tmp_maze[nr][nc] === "#") {
         tmp_guard.facing = (tmp_guard.facing + 1) % 4;
       } else {
         // move forward
@@ -110,11 +109,15 @@ const part2 = (rawInput) => {
       }
 
       // if in loop, as walking the grid with same direction
-      if (visistedGrid_vector.has(`${tmp_guard.r},${tmp_guard.c},${tmp_guard.facing}`)) {
+      if (
+        visistedGrid_vector.has(
+          `${tmp_guard.r},${tmp_guard.c},${tmp_guard.facing}`,
+        )
+      ) {
         return true;
       }
     }
-  }
+  };
 
   const guard_path = (maze, guard) => {
     let visistedGrid = new Set();
@@ -126,11 +129,10 @@ const part2 = (rawInput) => {
       const nr = guard.r + dr;
       const nc = guard.c + dc;
 
-      if (grid.isOutOfRange(nr, nc, maze))
-        break; // can escape, not in loop
+      if (grid.isOutOfRange(nr, nc, maze)) break; // can escape, not in loop
 
       // rotate if next step is wall
-      if (maze[nr][nc] === '#') {
+      if (maze[nr][nc] === "#") {
         guard.facing = (guard.facing + 1) % 4;
       } else {
         // move forward
@@ -144,15 +146,12 @@ const part2 = (rawInput) => {
 
   let result = 0;
   guard_path(maze, { ...guard }).forEach((v) => {
-    const [r, c] = v.split(',').map(Number);
-    maze[r][c] = '#'; // place wall
-    if (isLoop(maze, { ...guard }))
-      result++;
+    const [r, c] = v.split(",").map(Number);
+    maze[r][c] = "#"; // place wall
+    if (isLoop(maze, { ...guard })) result++;
 
-    maze[r][c] = '.'; // reset path
-
+    maze[r][c] = "."; // reset path
   });
-
 
   return result;
 };

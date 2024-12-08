@@ -38,7 +38,10 @@ const part1 = (rawInput) => {
         // Map : 前 => [後]
         // 如果 next 的 rule 裡面有 curr(後), 代表反了
         // 因爲現在 curr 是 next 的前面, 不是後
-        if (order_rules_map.has(next) && order_rules_map.get(next).includes(curr)) {
+        if (
+          order_rules_map.has(next) &&
+          order_rules_map.get(next).includes(curr)
+        ) {
           valid = false;
           break;
         }
@@ -52,8 +55,6 @@ const part1 = (rawInput) => {
   }
   return result;
 };
-
-
 
 const part2 = (rawInput) => {
   const { order_rules_map, update_orders } = parseInput(rawInput);
@@ -74,7 +75,10 @@ const part2 = (rawInput) => {
         const next = update_order[j];
 
         // if curr next 反了, shift it
-        if (order_rules_map.has(next) && order_rules_map.get(next).includes(curr)) {
+        if (
+          order_rules_map.has(next) &&
+          order_rules_map.get(next).includes(curr)
+        ) {
           // console.log(`shift ${next} before ${curr}`);
 
           // Remove the element at index j
@@ -86,7 +90,6 @@ const part2 = (rawInput) => {
           i--; // Re-evaluate the order at curr index
           break; // Break to re-evaluate the order after shifting
         }
-
       }
     }
 
@@ -106,7 +109,7 @@ const part2_kahn = (rawInput) => {
 
   let result = 0;
 
-  update_orders.forEach(update_order => {
+  update_orders.forEach((update_order) => {
     let valid = true;
 
     // Check if the order is correct
@@ -114,7 +117,10 @@ const part2_kahn = (rawInput) => {
       const curr = update_order[i];
       for (let j = i + 1; j < update_order.length; j++) {
         const next = update_order[j];
-        if (order_rules_map.has(next) && order_rules_map.get(next).includes(curr)) {
+        if (
+          order_rules_map.has(next) &&
+          order_rules_map.get(next).includes(curr)
+        ) {
           valid = false;
           break;
         }
