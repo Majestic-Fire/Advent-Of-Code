@@ -95,9 +95,11 @@
     {
       "part1": {
         "solved": false,
-        "result": "7885693428160",
-        "attempts": [],
-        "time": 138.6745
+        "result": "7885693428401",
+        "attempts": [
+          "7885693428160"
+        ],
+        "time": 123.185
       },
       "part2": {
         "solved": false,

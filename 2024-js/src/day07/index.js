@@ -6,13 +6,13 @@ const part1 = (rawInput) => {
   const input = parseInput(rawInput);
   const lines = input.split("\n");
 
-  const eqns = new Map();
+  const eqns = [];
   lines.forEach(line => {
     const [key, values] = line.split(":").map(x => x.trim());
-    eqns.set(Number(key), values.split(" ").map(Number));
+    eqns.push({ k: Number(key), v: values.split(" ").map(Number) });
   });
 
-  const evalute = (v, operators) => {
+  const evaluate = (v, operators) => {
     let product = v[0];
     operators.forEach((op, i) => {
       if (op === '+') {
@@ -24,14 +24,11 @@ const part1 = (rawInput) => {
     return product;
   };
 
-  function findOperators(v, k, operators = []) {
+  function findOperators(v, k, operators) {
     // if found 
     if (operators.length === v.length - 1) {
-      if (evalute(v, operators) === k) {
-        return true;
-      }
-
-      return false;
+      const result = evaluate(v, operators);
+      return result === k;
     }
 
     // recursion
@@ -43,8 +40,8 @@ const part1 = (rawInput) => {
 
 
   let result = 0;
-  eqns.forEach((v, k) => {
-    if (findOperators(v, k)) {
+  eqns.forEach(({ k, v }) => {
+    if (findOperators(v, k, [])) {
       result += k;
     }
   });
