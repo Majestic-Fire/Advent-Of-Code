@@ -21,3 +21,7 @@ Task description: [link](https://adventofcode.com/2024/day/6)
 ```js
 if (isLoop(maze, guard)) result++;
 ```
+
+TODO: better algorithm
+- find rectangle path , with corner +
+- and place obstacle 
