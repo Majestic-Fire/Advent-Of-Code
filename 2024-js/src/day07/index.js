@@ -7,17 +7,17 @@ const part1 = (rawInput) => {
   const lines = input.split("\n");
 
   const eqns = [];
-  lines.forEach(line => {
-    const [key, values] = line.split(":").map(x => x.trim());
+  lines.forEach((line) => {
+    const [key, values] = line.split(":").map((x) => x.trim());
     eqns.push({ k: Number(key), v: values.split(" ").map(Number) });
   });
 
   const evaluate = (v, operators) => {
     let product = v[0];
     operators.forEach((op, i) => {
-      if (op === '+') {
+      if (op === "+") {
         product += v[i + 1];
-      } else if (op === '*') {
+      } else if (op === "*") {
         product *= v[i + 1];
       }
     });
@@ -25,7 +25,7 @@ const part1 = (rawInput) => {
   };
 
   function findOperators(v, k, operators) {
-    // if found 
+    // if found
     if (operators.length === v.length - 1) {
       const result = evaluate(v, operators);
       return result === k;
@@ -33,11 +33,10 @@ const part1 = (rawInput) => {
 
     // recursion
     return (
-      findOperators(v, k, [...operators, '+']) ||
-      findOperators(v, k, [...operators, '*'])
-    )
+      findOperators(v, k, [...operators, "+"]) ||
+      findOperators(v, k, [...operators, "*"])
+    );
   }
-
 
   let result = 0;
   eqns.forEach(({ k, v }) => {
@@ -53,19 +52,19 @@ const part2 = (rawInput) => {
   const lines = input.split("\n");
 
   const eqns = [];
-  lines.forEach(line => {
-    const [key, values] = line.split(":").map(x => x.trim());
+  lines.forEach((line) => {
+    const [key, values] = line.split(":").map((x) => x.trim());
     eqns.push({ k: Number(key), v: values.split(" ").map(Number) });
   });
 
   const evaluate = (v, operators) => {
     let product = v[0];
     operators.forEach((op, i) => {
-      if (op === '+') {
+      if (op === "+") {
         product += v[i + 1];
-      } else if (op === '*') {
+      } else if (op === "*") {
         product *= v[i + 1];
-      } else if (op === '||') {
+      } else if (op === "||") {
         product = product * Math.pow(10, v[i + 1].toString().length) + v[i + 1];
       }
     });
@@ -73,7 +72,7 @@ const part2 = (rawInput) => {
   };
 
   function findOperators(v, k, operators) {
-    // if found 
+    // if found
     if (operators.length === v.length - 1) {
       const result = evaluate(v, operators);
       return result === k;
@@ -81,12 +80,11 @@ const part2 = (rawInput) => {
 
     // recursion
     return (
-      findOperators(v, k, [...operators, '||']) ||
-      findOperators(v, k, [...operators, '+']) ||
-      findOperators(v, k, [...operators, '*'])
-    )
+      findOperators(v, k, [...operators, "||"]) ||
+      findOperators(v, k, [...operators, "+"]) ||
+      findOperators(v, k, [...operators, "*"])
+    );
   }
-
 
   let result = 0;
   eqns.forEach(({ k, v }) => {

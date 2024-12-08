@@ -15,7 +15,7 @@ const part1 = (rawInput) => {
     line.split("").forEach((char, col) => {
       rowArr.push(char);
 
-      if (char === '.') return;
+      if (char === ".") return;
       if (!charMap.has(char)) charMap.set(char, []);
       charMap.get(char).push({ row, col });
     });
@@ -40,22 +40,22 @@ const part1 = (rawInput) => {
         const node2 = { row: p2.row + dr, col: p2.col + dc };
 
         if (!gridUtil.isOutOfRange(node1.row, node1.col, grid)) {
-          grid[node1.row][node1.col] = '#';
+          // grid[node1.row][node1.col] = "#";
           uniqueNode.add(`${node1.row},${node1.col}`);
         }
 
         if (!gridUtil.isOutOfRange(node2.row, node2.col, grid)) {
-          grid[node2.row][node2.col] = '#';
+          // grid[node2.row][node2.col] = "#";
           uniqueNode.add(`${node2.row},${node2.col}`);
         }
       }
     }
   }
 
-  // Visualize 
-  console.log("\ngrid:")
-  console.log(grid.map(row => row.join("")).join("\n"));
-  console.log(uniqueNode);
+  // Visualize
+  // console.log("\ngrid:");
+  // console.log(grid.map((row) => row.join("")).join("\n"));
+  // console.log(uniqueNode);
 
   // Count the number of #
   let result = uniqueNode.size;
@@ -75,7 +75,7 @@ const part2 = (rawInput) => {
     line.split("").forEach((char, col) => {
       rowArr.push(char);
 
-      if (char === '.') return;
+      if (char === ".") return;
       if (!charMap.has(char)) charMap.set(char, []);
       charMap.get(char).push({ row, col });
     });
@@ -98,37 +98,33 @@ const part2 = (rawInput) => {
 
         let k = 0;
         while (true) {
-
           const node1 = { row: p1.row - k * dr, col: p1.col - k * dc };
           if (gridUtil.isOutOfRange(node1.row, node1.col, grid)) {
             break;
           }
-          grid[node1.row][node1.col] = '#';
+          // grid[node1.row][node1.col] = "#";
           uniqueNode.add(`${node1.row},${node1.col}`);
-          k++
+          k++;
         }
 
         k = 0;
         while (true) {
-
           const node2 = { row: p2.row + k * dr, col: p2.col + k * dc };
           if (gridUtil.isOutOfRange(node2.row, node2.col, grid)) {
             break;
           }
-          grid[node2.row][node2.col] = '#';
+          // grid[node2.row][node2.col] = "#";
           uniqueNode.add(`${node2.row},${node2.col}`);
-          k++
+          k++;
         }
-
-
       }
     }
   }
 
-  // Visualize 
-  console.log("\ngrid:")
-  console.log(grid.map(row => row.join("")).join("\n"));
-  console.log(uniqueNode);
+  // Visualize
+  // console.log("\ngrid:");
+  // console.log(grid.map((row) => row.join("")).join("\n"));
+  // console.log(uniqueNode);
 
   // Count the number of #
   let result = uniqueNode.size;

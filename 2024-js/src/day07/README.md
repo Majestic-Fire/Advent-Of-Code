@@ -8,6 +8,7 @@ Task description: [link](https://adventofcode.com/2024/day/7)
 
 - Map() issue
 - same key, different values
+
 ```js
 241: 17 1 8 3 3 7
 241: 24 1 1
@@ -54,4 +55,5 @@ const testPerformance = () => {
 
 testPerformance();
 ```
+
 ...

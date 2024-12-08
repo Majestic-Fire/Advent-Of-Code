@@ -23,5 +23,6 @@ if (isLoop(maze, guard)) result++;
 ```
 
 TODO: better algorithm
+
 - find rectangle path , with corner +
-- and place obstacle 
+- and place obstacle
