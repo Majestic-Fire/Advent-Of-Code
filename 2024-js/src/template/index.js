@@ -1,4 +1,5 @@
 import run from "aocrunner";
+import * as Util from "../utils/index.js";
 
 const parseInput = (rawInput) => rawInput;
 

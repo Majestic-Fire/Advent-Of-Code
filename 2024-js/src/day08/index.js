@@ -1,5 +1,5 @@
 import run from "aocrunner";
-import { gridUtil } from "../utils/index.js";
+import * as Util from "../utils/index.js";
 
 const parseInput = (rawInput) => rawInput;
 
@@ -39,12 +39,12 @@ const part1 = (rawInput) => {
         const node1 = { row: p1.row - dr, col: p1.col - dc };
         const node2 = { row: p2.row + dr, col: p2.col + dc };
 
-        if (!gridUtil.isOutOfRange(node1.row, node1.col, grid)) {
+        if (!Util.gridU.isOutOfRange(node1.row, node1.col, grid)) {
           // grid[node1.row][node1.col] = "#";
           uniqueNode.add(`${node1.row},${node1.col}`);
         }
 
-        if (!gridUtil.isOutOfRange(node2.row, node2.col, grid)) {
+        if (!Util.gridU.isOutOfRange(node2.row, node2.col, grid)) {
           // grid[node2.row][node2.col] = "#";
           uniqueNode.add(`${node2.row},${node2.col}`);
         }
@@ -99,7 +99,7 @@ const part2 = (rawInput) => {
         let k = 0;
         while (true) {
           const node1 = { row: p1.row - k * dr, col: p1.col - k * dc };
-          if (gridUtil.isOutOfRange(node1.row, node1.col, grid)) {
+          if (Util.gridU.isOutOfRange(node1.row, node1.col, grid)) {
             break;
           }
           // grid[node1.row][node1.col] = "#";
@@ -110,7 +110,7 @@ const part2 = (rawInput) => {
         k = 0;
         while (true) {
           const node2 = { row: p2.row + k * dr, col: p2.col + k * dc };
-          if (gridUtil.isOutOfRange(node2.row, node2.col, grid)) {
+          if (Util.gridU.isOutOfRange(node2.row, node2.col, grid)) {
             break;
           }
           // grid[node2.row][node2.col] = "#";
