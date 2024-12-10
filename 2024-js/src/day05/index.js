@@ -130,7 +130,7 @@ const part2_kahn = (rawInput) => {
 
     // Only count the incorrect order, fix it, sum of mid number
     if (!valid) {
-      const new_number_list = sort.kahnSort(update_order, order_rules_map);
+      const new_number_list = sortUtil.kahnSort(update_order, order_rules_map);
       result += new_number_list[new_number_list.length >> 1];
     }
   });

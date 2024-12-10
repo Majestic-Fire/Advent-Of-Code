@@ -1,5 +1,5 @@
 import run from "aocrunner";
-import { gridUtil } from "../utils/index.js";
+import * as Util from "../utils/index.js";
 
 const parseInput = (rawInput) => rawInput;
 
@@ -32,7 +32,7 @@ const part1 = (rawInput) => {
   }
 
   let result = 0;
-  while (!grid.isOutOfRange(guard.r, guard.c, maze)) {
+  while (!Util.gridU.isOutOfRange(guard.r, guard.c, maze)) {
     // leave a mark
     if (maze[guard.r][guard.c] !== "X") {
       maze[guard.r][guard.c] = "X";
@@ -43,7 +43,7 @@ const part1 = (rawInput) => {
     const nr = guard.r + dr;
     const nc = guard.c + dc;
 
-    if (grid.isOutOfRange(nr, nc, maze)) break;
+    if (Util.gridU.isOutOfRange(nr, nc, maze)) break;
 
     // rotate if next step is wall
     if (maze[nr][nc] === "#") {
@@ -97,7 +97,7 @@ const part2 = (rawInput) => {
       const nr = tmp_guard.r + dr;
       const nc = tmp_guard.c + dc;
 
-      if (grid.isOutOfRange(nr, nc, tmp_maze)) return false; // can escape, not in loop
+      if (Util.gridU.isOutOfRange(nr, nc, tmp_maze)) return false; // can escape, not in loop
 
       // rotate if next step is wall
       if (tmp_maze[nr][nc] === "#") {
@@ -129,7 +129,7 @@ const part2 = (rawInput) => {
       const nr = guard.r + dr;
       const nc = guard.c + dc;
 
-      if (grid.isOutOfRange(nr, nc, maze)) break; // can escape, not in loop
+      if (Util.gridU.isOutOfRange(nr, nc, maze)) break; // can escape, not in loop
 
       // rotate if next step is wall
       if (maze[nr][nc] === "#") {
