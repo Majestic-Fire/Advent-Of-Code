@@ -126,21 +126,21 @@
     },
     {
       "part1": {
-        "solved": false,
-        "result": "NaN",
+        "solved": true,
+        "result": "8247027337632",
         "attempts": [
           "5644313364",
           "5644263335",
           "6382875735926",
           "86134089269"
         ],
-        "time": 24.7274
+        "time": 4.0266
       },
       "part2": {
         "solved": false,
         "result": "0",
         "attempts": [],
-        "time": 0.0059
+        "time": 0.0029
       }
     },
     {
