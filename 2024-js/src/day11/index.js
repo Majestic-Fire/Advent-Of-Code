@@ -37,8 +37,9 @@ function processStones(stones, blinkTime) {
     let newStoneMap = new Map();
 
     stoneMap.forEach((count, stone) => {
-      const newStones = applyRule(stone);
+      const newStones = applyRule(stone); // [2024]*3個 -> [20,24]*3個
       newStones.forEach(newStone => {
+        // { 20: 原本 + 3個, 24: 原本 + 3個 }
         newStoneMap.set(newStone, (newStoneMap.get(newStone) || 0) + count);
       });
     });
