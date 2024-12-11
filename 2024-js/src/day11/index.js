@@ -3,69 +3,29 @@ import * as Util from "../utils/index.js";
 
 const parseInput = (rawInput) => rawInput;
 
-const part1 = (rawInput) => {
-  const input = parseInput(rawInput);
-  let stones = input.split(" ").map(Number);
-
-  const Rules = {
-    0: () => [1],
-    evenDigits: (x) => {
-      const str = x.toString();
-      const mid = Math.floor(str.length / 2);
-      const left = parseInt(str.slice(0, mid), 10);
-      const right = parseInt(str.slice(mid), 10);
-      return [left, right];
-    },
-    default: (x) => [x * 2024]
-  };
-
-  function applyRule(stone) {
-    if (stone === 0) {
-      return Rules[0]();
-    } else if (stone.toString().length % 2 === 0) {
-      return Rules.evenDigits(stone);
-    } else {
-      return Rules.default(stone);
-    }
-  }
-
-  const blinkTime = 25;
-  for (let i = 0; i < blinkTime; i++) {
-    stones = stones.flatMap(applyRule);
-  }
-
-  let result = stones.length;
-
-  return result;
+const Rules = {
+  0: () => [1],
+  evenDigits: (x) => {
+    const str = x.toString();
+    const mid = Math.floor(str.length / 2);
+    const left = parseInt(str.slice(0, mid), 10);
+    const right = parseInt(str.slice(mid), 10);
+    return [left, right];
+  },
+  default: (x) => [x * 2024]
 };
 
-const part2 = (rawInput) => {
-  const input = parseInput(rawInput);
-  let stones = input.split(" ").map(Number);
-
-  const Rules = {
-    0: () => [1],
-    evenDigits: (x) => {
-      const str = x.toString();
-      const mid = Math.floor(str.length / 2);
-      const left = parseInt(str.slice(0, mid), 10);
-      const right = parseInt(str.slice(mid), 10);
-      return [left, right];
-    },
-    default: (x) => [x * 2024]
-  };
-
-  function applyRule(stone) {
-    if (stone === 0) {
-      return Rules[0]();
-    } else if (stone.toString().length % 2 === 0) {
-      return Rules.evenDigits(stone);
-    } else {
-      return Rules.default(stone);
-    }
+function applyRule(stone) {
+  if (stone === 0) {
+    return Rules[0]();
+  } else if (stone.toString().length % 2 === 0) {
+    return Rules.evenDigits(stone);
+  } else {
+    return Rules.default(stone);
   }
+}
 
-  const blinkTime = 75;
+function processStones(stones, blinkTime) {
   let stoneMap = new Map();
 
   // Initialize the map with the initial stones
@@ -92,6 +52,20 @@ const part2 = (rawInput) => {
   });
 
   return result;
+}
+
+const part1 = (rawInput) => {
+  const input = parseInput(rawInput);
+  let stones = input.split(" ").map(Number);
+  const blinkTime = 25;
+  return processStones(stones, blinkTime);
+};
+
+const part2 = (rawInput) => {
+  const input = parseInput(rawInput);
+  let stones = input.split(" ").map(Number);
+  const blinkTime = 75;
+  return processStones(stones, blinkTime);
 };
 
 run({
