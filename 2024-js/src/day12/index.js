@@ -200,8 +200,6 @@ const dfs_corner = (grid, grid_cells, r, c, gridVisited) => {
 
 const part2 = (rawInput) => {
   const input = parseInput(rawInput);
-  console.log(input);
-
   const grid = input.split("\n").map((row) => row.split(""));
   const grid_cells = Array.from({ length: grid.length }, () =>
     Array.from({ length: grid[0].length }, () => new Cell())
