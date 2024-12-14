@@ -25,5 +25,6 @@
 
 import * as sort from "./sort.js";
 import * as grid from "./grid.js";
+import * as visual from "./visual.js";
 
-export { sort as sortU, grid as gridU };
+export { sort as sortU, grid as gridU, visual };
